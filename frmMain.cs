@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -35,7 +36,15 @@ namespace DnsResolver
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 0)
             {
-                EnqueueResolve(dgDnsEntries.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as string);
+                var originalHostname = (string)dgDnsEntries.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                var hostname = GetValidHostname(originalHostname);
+
+                if (originalHostname.Equals(hostname) == false)
+                {
+                    dgDnsEntries.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = hostname;
+                }
+
+                EnqueueResolve(hostname);
             }
         }
 
@@ -76,7 +85,7 @@ namespace DnsResolver
         {
             var entries = Clipboard.GetText();
 
-            var hostnames = entries.Split(new string[] { ",", "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var hostnames = entries.Split(new string[] { ",", "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(s => GetValidHostname(s));
 
             DataGridViewRow row;
 
@@ -135,6 +144,14 @@ namespace DnsResolver
             }
 
             return hostnames.Distinct();
+        }
+
+        private string GetValidHostname(string hostname)
+        {
+            hostname = Regex.Replace(hostname, @"^.*://", ""); // remove anything like http:// https:// ftp:// git://
+            hostname = Regex.Replace(hostname, @"^\\\\", ""); // remove starting \\
+            hostname = Regex.Replace(hostname, @"([^/:\\]+).*", "$1"); // remove anything after one of the following characters:- : / \
+            return hostname;
         }
 
         #endregion Private Methods
