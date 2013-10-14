@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -162,30 +163,60 @@ namespace DnsResolver
         {
             tmrQueuePoll.Enabled = false;
 
-            try
+            var task = Task.Run(() =>
             {
-                lock (dnsRequestsToDo)
+                try
                 {
-                    while (dnsRequestsToDo.Any())
+                    lock (dnsRequestsToDo)
                     {
-                        var hostname = dnsRequestsToDo.Dequeue();
+                        if (dnsRequestsToDo.Any())
+                        {
+                            SemaphoreSlim semaphore = new SemaphoreSlim(5);
 
-                        try
-                        {
-                            var ip = Dns.GetHostEntry(hostname);
-                            UpdateIPAddress(hostname, ip.AddressList[0].ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            UpdateIPAddress(hostname, ex.Message);
+                            while (dnsRequestsToDo.Any())
+                            {
+                                semaphore.Wait(Timeout.Infinite);
+
+                                var hostname = dnsRequestsToDo.Dequeue();
+
+                                UpdateIPAddress(hostname, "performing look up...");
+
+                                var dnsTask = Dns.GetHostEntryAsync(hostname);
+
+                                dnsTask.ContinueWith(_ =>
+                                {
+                                    try
+                                    {
+                                        if (_.IsFaulted)
+                                        {
+                                            UpdateIPAddress(hostname, _.Exception.InnerExceptions[0].Message);
+                                        }
+                                        else if (_.IsCompleted)
+                                        {
+                                            UpdateIPAddress(hostname, _.Result.AddressList[0].ToString());
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        UpdateIPAddress(hostname, ex.Message);
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                });
+                            }
                         }
                     }
                 }
-            }
-            finally
-            {
-                tmrQueuePoll.Enabled = true;
-            }
+                finally
+                {
+                    this.InvokeAction(_ =>
+                    {
+                        tmrQueuePoll.Enabled = true;
+                    });
+                }
+            });
         }
 
         #endregion Events
