@@ -69,8 +69,11 @@
             this.dgDnsEntries.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgDnsEntries.Name = "dgDnsEntries";
             this.dgDnsEntries.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.dgDnsEntries.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgDnsEntries.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgDnsEntries.RowTemplate.DefaultCellStyle.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.dgDnsEntries.Size = new System.Drawing.Size(556, 364);
             this.dgDnsEntries.TabIndex = 0;
             this.dgDnsEntries.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgDnsEntries_CellValueChanged);
@@ -150,7 +153,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(582, 432);
             this.Controls.Add(this.btnPasteFromClipboard);
             this.Controls.Add(this.btnFlushDNS);
