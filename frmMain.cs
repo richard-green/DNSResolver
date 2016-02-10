@@ -111,7 +111,7 @@ namespace DnsResolver
         {
             lock (dnsRequestsToDo)
             {
-                dnsRequestsToDo.Enqueue(hostname);
+                dnsRequestsToDo.Enqueue(hostname.Trim());
                 UpdateIPAddress(hostname, "pending...");
             }
         }
@@ -152,7 +152,7 @@ namespace DnsResolver
             hostname = Regex.Replace(hostname, @"^.*://", ""); // remove anything like http:// https:// ftp:// git://
             hostname = Regex.Replace(hostname, @"^\\\\", ""); // remove starting \\
             hostname = Regex.Replace(hostname, @"([^/:\\]+).*", "$1"); // remove anything after one of the following characters:- : / \
-            return hostname;
+            return hostname.Trim();
         }
 
         #endregion Private Methods
