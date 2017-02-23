@@ -33,13 +33,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.dgDnsEntries = new System.Windows.Forms.DataGridView();
-            this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IPAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnResolveAll = new System.Windows.Forms.Button();
             this.btnClearList = new System.Windows.Forms.Button();
             this.btnFlushDNS = new System.Windows.Forms.Button();
             this.tmrQueuePoll = new System.Windows.Forms.Timer(this.components);
             this.btnPasteFromClipboard = new System.Windows.Forms.Button();
+            this.DNSName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IPAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgDnsEntries)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,8 +64,9 @@
             this.dgDnsEntries.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgDnsEntries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgDnsEntries.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Hostname,
-            this.IPAddress});
+            this.DNSName,
+            this.IPAddress,
+            this.Hostname});
             this.dgDnsEntries.Location = new System.Drawing.Point(13, 13);
             this.dgDnsEntries.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgDnsEntries.Name = "dgDnsEntries";
@@ -77,19 +79,6 @@
             this.dgDnsEntries.Size = new System.Drawing.Size(556, 364);
             this.dgDnsEntries.TabIndex = 0;
             this.dgDnsEntries.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgDnsEntries_CellValueChanged);
-            // 
-            // Hostname
-            // 
-            this.Hostname.HeaderText = "Hostname";
-            this.Hostname.Name = "Hostname";
-            this.Hostname.Width = 300;
-            // 
-            // IPAddress
-            // 
-            this.IPAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.IPAddress.HeaderText = "IP Address";
-            this.IPAddress.Name = "IPAddress";
-            this.IPAddress.ReadOnly = true;
             // 
             // btnResolveAll
             // 
@@ -149,6 +138,28 @@
             this.btnPasteFromClipboard.UseVisualStyleBackColor = true;
             this.btnPasteFromClipboard.Click += new System.EventHandler(this.btnPasteFromClipboard_Click);
             // 
+            // DNSName
+            // 
+            this.DNSName.HeaderText = "DNS Name";
+            this.DNSName.Name = "DNSName";
+            this.DNSName.Width = 300;
+            // 
+            // IPAddress
+            // 
+            this.IPAddress.HeaderText = "IP Address";
+            this.IPAddress.MinimumWidth = 120;
+            this.IPAddress.Name = "IPAddress";
+            this.IPAddress.ReadOnly = true;
+            this.IPAddress.Width = 120;
+            // 
+            // Hostname
+            // 
+            this.Hostname.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Hostname.HeaderText = "Hostname";
+            this.Hostname.MinimumWidth = 120;
+            this.Hostname.Name = "Hostname";
+            this.Hostname.ReadOnly = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -179,6 +190,7 @@
         private System.Windows.Forms.Button btnFlushDNS;
         private System.Windows.Forms.Timer tmrQueuePoll;
         private System.Windows.Forms.Button btnPasteFromClipboard;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DNSName;
         private System.Windows.Forms.DataGridViewTextBoxColumn IPAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn Hostname;
     }

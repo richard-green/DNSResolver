@@ -116,15 +116,16 @@ namespace DnsResolver
             }
         }
 
-        private void UpdateIPAddress(string hostname, string newValue)
+        private void UpdateIPAddress(string dnsName, string ipAddress, string hostName = "")
         {
             this.InvokeAction(@this =>
                 {
                     for (int i = 0; i < dgDnsEntries.Rows.Count; i++)
                     {
-                        if (hostname.Equals(((string)dgDnsEntries.Rows[i].Cells[0].Value), StringComparison.CurrentCultureIgnoreCase))
+                        if (dnsName.Equals(((string)dgDnsEntries.Rows[i].Cells[0].Value), StringComparison.CurrentCultureIgnoreCase))
                         {
-                            dgDnsEntries.Rows[i].Cells[1].Value = newValue;
+                            dgDnsEntries.Rows[i].Cells[1].Value = ipAddress;
+                            dgDnsEntries.Rows[i].Cells[2].Value = hostName;
                         }
                     }
                 });
@@ -193,7 +194,7 @@ namespace DnsResolver
                                         }
                                         else if (_.IsCompleted)
                                         {
-                                            UpdateIPAddress(hostname, _.Result.AddressList[0].ToString());
+                                            UpdateIPAddress(hostname, _.Result.AddressList[0].ToString(), _.Result.HostName);
                                         }
                                     }
                                     catch (Exception ex)
